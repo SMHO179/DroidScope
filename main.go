@@ -5,41 +5,39 @@ import (
 	"os/exec"
 )
 
-var version string = "0.1.0"
-var build string = "2026-21-11"
-var adbStatus bool = true
-var connectedDevices int = 1
-var condition bool = true
+var version = "0.1.5"
+var build = "2026-11-21"
 
-func adb() {
+func adb() (string, error) {
 	cmd := exec.Command("adb", "version")
+
 	output, err := cmd.Output()
 	if err != nil {
-		fmt.Println("ADB Error:", err)
-		condition = false
-		return
+		return "", fmt.Errorf("ADB Error: %w", err)
 	}
 
-	fmt.Println(string(output))
+	return string(output), nil
 }
 
 func start() {
 	fmt.Println("DroidScope v" + version)
-	fmt.Println("developed by: @SMHO179")
-	fmt.Println("language: Go")
-	fmt.Println("build: " + build)
-	if condition == true {
-		adbStatus = true
-	} else {
-		adbStatus = false
-		connectedDevices = 0
+	fmt.Println("Developed by: @SMHO179")
+	fmt.Println("Language: Go")
+	fmt.Println("Build: " + build)
+
+	output, err := adb()
+
+	if err != nil {
+		fmt.Println("Status ADB: Not Available")
+		fmt.Println("Error:", err)
+		return
 	}
-	fmt.Printf("Status ADB: %t\n", adbStatus)
-	fmt.Printf("Connected Devices: %d\n", connectedDevices)
-	// fmt.Println()
+
+	fmt.Println("Status ADB: Available")
+	fmt.Println("ADB Version:")
+	fmt.Print(output)
 }
 
 func main() {
-	adb()
 	start()
 }
