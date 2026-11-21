@@ -14,6 +14,12 @@ var condition string = "not OK"
 func adb() {
 	cmd := exec.Command("adb", "version")
 	output, err := cmd.Output()
+	if err != nil {
+		fmt.Println("ADB Error:", err)
+		return
+	}
+
+	fmt.Println(string(output))
 }
 
 func start() {
@@ -33,5 +39,6 @@ func start() {
 }
 
 func main() {
+	adb()
 	start()
 }
