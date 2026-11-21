@@ -9,13 +9,14 @@ var version string = "0.1.0"
 var build string = "2026-21-11"
 var adbStatus bool = true
 var connectedDevices int = 1
-var condition string = "not OK"
+var condition bool = true
 
 func adb() {
 	cmd := exec.Command("adb", "version")
 	output, err := cmd.Output()
 	if err != nil {
 		fmt.Println("ADB Error:", err)
+		condition = false
 		return
 	}
 
@@ -27,7 +28,7 @@ func start() {
 	fmt.Println("developed by: @SMHO179")
 	fmt.Println("language: Go")
 	fmt.Println("build: " + build)
-	if condition == "OK" {
+	if condition == true {
 		adbStatus = true
 	} else {
 		adbStatus = false
